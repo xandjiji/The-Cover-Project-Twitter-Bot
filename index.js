@@ -84,10 +84,13 @@ async function downloadImage(link) {
         response.body.pipe(file);
         response.body.on('error', (error) => {
             reject(error);
+            
             return { error: true, errorMsg: error };
         });
         file.on('finish', function() {
             resolve();
+            
+            return { error: false };
         });
     });
 
