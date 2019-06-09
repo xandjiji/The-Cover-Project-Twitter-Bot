@@ -30,13 +30,10 @@ async function main() {
 
     // compressing image
     sharp.cache(false);
-    let compress = compressImg();
+    let compress = await compressImg();
     if(compress.error) {
         utils.errorMsg(compress.errorMsg);
     }
-
-    // making sure the image is finished compressing
-    await utils.sleep(10000);
 
     // uploading image
     let img = await uploadImg();
