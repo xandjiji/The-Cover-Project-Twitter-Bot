@@ -16,7 +16,7 @@ async function main() {
     // getting a random page from The Cover Project
     let randomPage = await getRandomPage();
     if(randomPage.error) {
-        utils(randomPage.errorMsg);
+        utils.errorMsg(randomPage.errorMsg);
     }
 
     // getting game title and image link
@@ -25,14 +25,14 @@ async function main() {
     // downloading image
     let download = await downloadImage(data.link);
     if(download.error) {
-        utils(download.errorMsg);
+        utils.errorMsg(download.errorMsg);
     }
 
     // compressing image
     sharp.cache(false);
     let compress = compressImg();
     if(compress.error) {
-        utils(compress.errorMsg);
+        utils.errorMsg(compress.errorMsg);
     }
 
     // making sure the image is finished compressing
@@ -41,14 +41,14 @@ async function main() {
     // uploading image
     let img = await uploadImg();
     if(img.error) {
-        utils(img.errorMsg);
+        utils.errorMsg(img.errorMsg);
     }
 
     // tweeting
     let status = utils.makeTweet(data.title, img.link);
     let tweet = await postTweet(status);
     if(tweet.error) {
-        utils(tweet.errorMsg);
+        utils.errorMsg(tweet.errorMsg);
     }
 
     utils.successMsg(data.title);
