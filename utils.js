@@ -30,10 +30,4 @@ utils.makeTweet = function makeTweet(title, imgLink) {
     return composedTweet;
 }
 
-utils.sleep = function sleep(ms){
-    return new Promise(resolve=>{
-        setTimeout(resolve,ms)
-    });
-}
-
 module.exports = utils;
