@@ -5,7 +5,7 @@ const Twitter   = require('twitter');
 const fs        = require('fs');
 
 const utils     = require('./utils');
-const config    = require('./config');
+const config    = require('./keys.env');
 
 const url       = 'http://www.thecoverproject.net/view.php?cover_id=';
 const baseURL   = 'http://www.thecoverproject.net';

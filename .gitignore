@@ -1,4 +1,4 @@
 /node_modules
-config.js
 cover.png
 cover_compressed.jpeg
+*.env
