@@ -10,7 +10,7 @@ utils.timeStamp = function timeStamp() {
 
 utils.successMsg = function successMsg(game) {
     
-    let msg =   `${utils.timeStamp()} tweet feito com sucesso (${game})`;
+    let msg = `${utils.timeStamp()} tweet feito com sucesso (${game})`;
 
     return console.log(msg);
 }
