@@ -1,7 +1,5 @@
 let utils = {}
 
-/* funcoes de console.log() */
-
 utils.timeStamp = function timeStamp() {
     let time = new Date().toLocaleTimeString('en-US', {hour12: false, hour: 'numeric', minute: 'numeric', second: 'numeric'});
 
