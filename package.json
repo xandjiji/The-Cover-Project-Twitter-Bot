@@ -1,0 +1,25 @@
+{
+  "name": "the-cover-project-twitter-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xandjiji/The-Cover-Project-Twitter-Bot.git"
+  },
+  "author": "xandjiji",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xandjiji/The-Cover-Project-Twitter-Bot/issues"
+  },
+  "homepage": "https://github.com/xandjiji/The-Cover-Project-Twitter-Bot#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.0",
+    "cheerio": "^1.0.0-rc.3",
+    "sharp": "^0.22.1",
+    "twitter": "^1.7.1"
+  }
+}
