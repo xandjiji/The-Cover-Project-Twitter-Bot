@@ -29,7 +29,7 @@ Or simply:
 npm install
 ```
 
-Feed your Twitter API keys in the ```config.js``` file:
+Feed your Twitter API keys in the ```keys.env``` file:
 
 ```javascript
 module.exports = {
