@@ -80,7 +80,7 @@ async function downloadImage(link) {
     let response = await fetch(link);
 
     await new Promise((resolve, reject) => {
-        const file = fs.createWriteStream('saved/cover.png');
+        const file = fs.createWriteStream('cover.png');
         response.body.pipe(file);
         response.body.on('error', (error) => {
             reject(error);
@@ -99,9 +99,9 @@ async function downloadImage(link) {
 
 async function compressImg() {
     try {
-        await sharp('saved/cover.png')
+        await sharp('cover.png')
             .jpeg( { quality: 50 } )
-            .toFile('saved/cover_compressed.jpeg')
+            .toFile('cover_compressed.jpeg')
 
         return { error: false };
     } catch(error) {
@@ -110,7 +110,7 @@ async function compressImg() {
 }
 
 async function uploadImg() {
-    let imgPath = fs.readFileSync('saved/cover_compressed.jpeg');
+    let imgPath = fs.readFileSync('cover_compressed.jpeg');
 
     try {
         let imgData = await client.post('media/upload', {media: imgPath});
