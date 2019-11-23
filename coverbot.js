@@ -53,7 +53,7 @@ async function main() {
 }
 
 async function getRandomPage() {
-    let randomID = Math.floor((Math.random() * 16706) + 1);
+    let randomID = Math.floor((Math.random() * 16769) + 1);
 
     try {
         let response = await fetch2(url + randomID);
