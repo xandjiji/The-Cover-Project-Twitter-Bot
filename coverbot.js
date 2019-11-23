@@ -1,4 +1,5 @@
 const fetch     = require('node-fetch');
+const fetch2    = require('cloudscraper');
 const $         = require('cheerio');
 const sharp     = require('sharp');
 const Twitter   = require('twitter');
@@ -33,7 +34,7 @@ async function main() {
     let compress = await compressImg();
     if(compress.error) {
         utils.errorMsg(compress.errorMsg);
-    }
+    }  
 
     // uploading image
     let img = await uploadImg();
@@ -55,10 +56,9 @@ async function getRandomPage() {
     let randomID = Math.floor((Math.random() * 16706) + 1);
 
     try {
-        let response = await fetch(url + randomID);
-        let body = await response.text();
+        let response = await fetch2(url + randomID);
 
-        return { error: false, body: body };
+        return { error: false, body: response };
     } catch(error) {
         return { error: true, errorMsg: error };
     }
@@ -77,24 +77,17 @@ function cheerioParsing(body) {
 }
 
 async function downloadImage(link) {
-    let response = await fetch(link);
-
-    await new Promise((resolve, reject) => {
-        const file = fs.createWriteStream('cover.png');
-        response.body.pipe(file);
-        response.body.on('error', (error) => {
-            reject(error);
-            
-            return { error: true, errorMsg: error };
+    await fetch2.get({ uri: link, encoding: null })
+    .then(async function (bufferAsBody) {
+        await fs.writeFile('./cover.png', bufferAsBody, (err) => {
+            if(err) throw err;
         });
-        file.on('finish', function() {
-            resolve();
-            
-            return { error: false };
-        });
-    });
-
+        return { error: false };
+    })
+    .catch(console.error);
+    
     return { error: false };
+    
 }
 
 async function compressImg() {
