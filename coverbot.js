@@ -1,5 +1,4 @@
-const fetch     = require('node-fetch');
-const fetch2    = require('cloudscraper');
+const fetch     = require('cloudscraper');
 const $         = require('cheerio');
 const sharp     = require('sharp');
 const Twitter   = require('twitter');
@@ -14,49 +13,68 @@ const baseURL   = 'http://www.thecoverproject.net';
 var client      = new Twitter(config);
 
 async function main() {
+    let errorFlag = false;
+    
     // getting a random page from The Cover Project
     let randomPage = await getRandomPage();
     if(randomPage.error) {
         utils.errorMsg(randomPage.errorMsg);
+        errorFlag = true;
     }
 
     // getting game title and image link
-    let data = cheerioParsing(randomPage.body);
+    if(!errorFlag) {
+        var data = cheerioParsing(randomPage.body);
+    }
 
     // downloading image
-    let download = await downloadImage(data.link);
-    if(download.error) {
-        utils.errorMsg(download.errorMsg);
+    if(!errorFlag) {
+        let download = await downloadImage(data.link);
+        if(download.error) {
+            utils.errorMsg(download.errorMsg);
+            errorFlag = true;
+        }   
     }
 
     // compressing image
-    sharp.cache(false);
-    let compress = await compressImg();
-    if(compress.error) {
-        utils.errorMsg(compress.errorMsg);
-    }  
+    if(!errorFlag) {
+        sharp.cache(false);
+        let compress = await compressImg();
+        if(compress.error) {
+            utils.errorMsg(compress.errorMsg);
+            errorFlag = true;
+        }
+    }
 
     // uploading image
-    let img = await uploadImg();
-    if(img.error) {
-        utils.errorMsg(img.errorMsg);
+    if(!errorFlag) {
+        let img = await uploadImg();
+        if(img.error) {
+            utils.errorMsg(img.errorMsg);
+            errorFlag = true;
+        }        
     }
 
     // tweeting
-    let status = utils.makeTweet(data.title, img.link);
-    let tweet = await postTweet(status);
-    if(tweet.error) {
-        utils.errorMsg(tweet.errorMsg);
+    if(!errorFlag) {
+        let status = utils.makeTweet(data.title, img.link);
+        let tweet = await postTweet(status);
+        if(tweet.error) {
+            utils.errorMsg(tweet.errorMsg);
+            errorFlag = true;
+        }
     }
 
-    utils.successMsg(data.title);
+    if(!errorFlag) {
+        utils.successMsg(data);
+    }    
 }
 
 async function getRandomPage() {
     let randomID = Math.floor((Math.random() * 16769) + 1);
 
     try {
-        let response = await fetch2(url + randomID);
+        let response = await fetch(url + randomID);
 
         return { error: false, body: response };
     } catch(error) {
@@ -77,17 +95,22 @@ function cheerioParsing(body) {
 }
 
 async function downloadImage(link) {
-    await fetch2.get({ uri: link, encoding: null })
-    .then(async function (bufferAsBody) {
-        await fs.writeFile('./cover.png', bufferAsBody, (err) => {
-            if(err) throw err;
-        });
-        return { error: false };
-    })
-    .catch(console.error);
+    try {
+        await fetch.get({ uri: link, encoding: null })
+        .then(async function (bufferAsBody) {
+            fs.writeFile('./cover.png', bufferAsBody, (error) => {
+                if(error) {
+                    return { error: error };
+                }
+            });
+
+            return { error: false };
+        })
+    } catch (error) {
+        return { error: error };
+    }
     
     return { error: false };
-    
 }
 
 async function compressImg() {
