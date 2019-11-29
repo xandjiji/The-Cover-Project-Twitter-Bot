@@ -48,7 +48,7 @@ async function main() {
 
     // uploading image
     if(!errorFlag) {
-        let img = await uploadImg();
+        var img = await uploadImg();
         if(img.error) {
             utils.errorMsg(img.errorMsg);
             errorFlag = true;
